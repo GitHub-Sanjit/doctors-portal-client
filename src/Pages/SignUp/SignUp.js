@@ -64,6 +64,10 @@ const SignUp = () => {
                   value: 6,
                   message: "Password Must be 6 characters or longer",
                 },
+                pattern: {
+                  value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*#?&^_-]$/,
+                  message: "Password Must be Strong",
+                },
               })}
               className="input input-bordered w-full max-w-xs"
             />
