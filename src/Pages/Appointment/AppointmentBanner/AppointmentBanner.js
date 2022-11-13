@@ -1,6 +1,6 @@
 import React from "react";
 import chair from "../../../assets/images/chair.png";
-import { DayPicker, Footer } from "react-day-picker";
+import { DayPicker } from "react-day-picker";
 
 const AppointmentBanner = ({ selectedDate, setSelectedDate }) => {
   return (
@@ -13,7 +13,6 @@ const AppointmentBanner = ({ selectedDate, setSelectedDate }) => {
               mode="single"
               selected={selectedDate}
               onSelect={setSelectedDate}
-              footer={Footer}
             ></DayPicker>
           </div>
         </div>
