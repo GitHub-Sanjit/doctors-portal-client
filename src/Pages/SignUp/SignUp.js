@@ -31,13 +31,30 @@ const SignUp = () => {
         };
         updateUser(userInfo)
           .then(() => {
-            navigate("/");
+            saveUser(data.name, data.email);
+            // navigate("/");
           })
           .catch((err) => console.error(err));
       })
       .catch((err) => {
         console.error(err);
         setSignUpError(err.message);
+      });
+  };
+
+  const saveUser = (name, email) => {
+    const user = { name, email };
+    fetch("http://localhost:5000/users", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(user),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Save User", data);
+        navigate("/");
       });
   };
 
