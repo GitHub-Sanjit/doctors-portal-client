@@ -11,8 +11,8 @@ const AddDoctor = () => {
     formState: { errors },
     handleSubmit,
   } = useForm();
-    const imageHostKey = process.env.REACT_APP_imgbb_key;
-    const navigate = useNavigate()
+  const imageHostKey = process.env.REACT_APP_imgbb_key;
+  const navigate = useNavigate();
   const { data: specialties, isLoading } = useQuery({
     queryKey: ["specialty"],
     queryFn: async () => {
@@ -28,7 +28,7 @@ const AddDoctor = () => {
     const formData = new FormData();
     formData.append("image", image);
 
-    const url = `https://api.imgbb.com/1/upload?expiration=600&key=${imageHostKey}`;
+    const url = `https://api.imgbb.com/1/upload?key=${imageHostKey}`;
 
     fetch(url, {
       method: "POST",
@@ -57,8 +57,8 @@ const AddDoctor = () => {
             .then((res) => res.json())
             .then((result) => {
               console.log(result);
-                toast.success(`${data.name} is added successfully`);
-                navigate("/dashboard/managedoctors");
+              toast.success(`${data.name} is added successfully`);
+              navigate("/dashboard/managedoctors");
             });
         }
       });
