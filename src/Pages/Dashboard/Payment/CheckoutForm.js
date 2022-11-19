@@ -1,11 +1,26 @@
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const CheckoutForm = ({ booking }) => {
-  const { price } = booking;
+  const [clientSecret, setClientSecret] = useState("");
+  const { price, email, patient } = booking;
   const [cardError, setCardError] = useState("");
   const stripe = useStripe();
   const elements = useElements();
+
+  useEffect(() => {
+    // Create PaymentIntent as soon as the page loads
+    fetch("http://localhost:5000/create-payment-intent", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `bearer ${localStorage.getItem("accessToken")}`,
+      },
+      body: JSON.stringify({ items: [{ price }] }),
+    })
+      .then((res) => res.json())
+      .then((data) => setClientSecret(data.clientSecret));
+  }, [price]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -38,6 +53,17 @@ const CheckoutForm = ({ booking }) => {
       console.log("[PaymentMethod]", paymentMethod);
       setCardError("");
     }
+
+    const { paymentIntent, error: confirmError } =
+      await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: card,
+          billing_details: {
+            name: patient,
+            email: email,
+          },
+        },
+      });
   };
 
   return (
@@ -62,7 +88,7 @@ const CheckoutForm = ({ booking }) => {
         <button
           className="btn btn-sm mt-4 btn-primary"
           type="submit"
-          disabled={!stripe}
+          disabled={!stripe || !clientSecret}
         >
           Pay
         </button>
