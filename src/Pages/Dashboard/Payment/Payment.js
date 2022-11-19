@@ -1,6 +1,8 @@
+import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import React from "react";
 import { useLoaderData } from "react-router-dom";
+import CheckoutForm from "./CheckoutForm";
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
@@ -19,6 +21,11 @@ const Payment = () => {
         Please pay <strong>${price}</strong> for your appointment on{" "}
         {appointmentDate} at {slot}
       </p>
+      <div className="w-96 my-12">
+        <Elements stripe={stripePromise}>
+          <CheckoutForm />
+        </Elements>
+      </div>
     </div>
   );
 };
