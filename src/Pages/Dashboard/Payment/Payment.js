@@ -1,5 +1,11 @@
+import { loadStripe } from "@stripe/stripe-js";
 import React from "react";
 import { useLoaderData } from "react-router-dom";
+
+// Make sure to call `loadStripe` outside of a component’s render to avoid
+// recreating the `Stripe` object on every render.
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK);
+console.log(stripePromise);
 
 const Payment = () => {
   const booking = useLoaderData();
